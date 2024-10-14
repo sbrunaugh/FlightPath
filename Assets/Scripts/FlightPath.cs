@@ -19,7 +19,7 @@ namespace Assets.Scripts
             {
                 float x = 0;
                 float y = t * (t * 0.5f);
-                float z = 5 * (1 - (float)Math.Cos(Math.PI * t / 10));
+                float z = -0.01f * (float)Math.Pow(t - 10, 2) + (0.3f * t) + 2.1f;
                 return new Vector3(x, y, z);
             };
 
