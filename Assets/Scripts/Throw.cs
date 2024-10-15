@@ -7,8 +7,9 @@ public class Throw : MonoBehaviour
     public GameObject disc;          // The disc object
     public Transform handTransform;  // The hand bone where the disc starts
     public Animator animator;        // The Animator component for the humanoid model
-    public float throwForce = 500f;  // Adjust the force applied when throwing
+    public float throwForce = 100f;  // Adjust the force applied when throwing
     public Vector3 throwDirection = Vector3.forward;  // Direction of the throw
+    public CameraFollow cameraFollowScript;
 
     private Rigidbody discRigidBody;
 
@@ -24,15 +25,21 @@ public class Throw : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ThrowDisc();
+            StartThrow();
         }
+    }
+
+    void StartThrow()
+    {
+        animator.SetTrigger("Throw");
     }
 
     void ThrowDisc()
     {
-        animator.SetTrigger("Throw");
         disc.transform.SetParent(null);
         discRigidBody.isKinematic = false;
         discRigidBody.AddForce(throwDirection.normalized * throwForce);
+        disc.GetComponent<Transform>().Rotate(Vector3.right, 100f * Time.deltaTime);
+        cameraFollowScript.FollowDisc();
     }
 }
