@@ -37,12 +37,12 @@ namespace Assets.Scripts
             // TODO: Adjust the 3 equations of the parametric curve based on the above parameters.
             Func<float, Vector3> parametricCurve = (t) =>
             {
-                // 0
-                float x = 0;
-                // -(0.1t - sqrt(20))^2 + 20
-                float y = Negative(Square(0.1f * t - (float)Math.Sqrt(20f))) + 20f;
-                // 0.1t^2
-                float z = Square(-0.01f * t);
+                // 10 * sin(-0.05t)
+                float x = 10f * Mathf.Sin(-0.05f * t);
+                // 1.2t
+                float y = 1.2f * t;
+                // if(t<100, 0.235t, -0.05(t-100)^2 + 23.5)
+                float z = t < 100 ? 0.235f * t : -0.05f * Square(t - 100) + 23.5f;
                 return new Vector3(x, y, z);
             };
 
