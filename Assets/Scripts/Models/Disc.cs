@@ -1,10 +1,10 @@
 ﻿namespace Assets.Scripts.Models
 {
-    internal class Disc
+    public class Disc
     {
-        internal Speed Speed { get; set; }
-        internal Glide Glide { get; set; }
-        internal Turn Turn { get; set; }
-        internal Fade Fade { get; set; }
+        public Speed Speed { get; set; }
+        public Glide Glide { get; set; }
+        public Turn Turn { get; set; }
+        public Fade Fade { get; set; }
     }
 }

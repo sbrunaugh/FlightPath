@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts
 {
-    internal enum Speed
+    public enum Speed
     {
         Speed1,
         Speed2,
@@ -18,7 +18,7 @@
         Speed14
     }
 
-    internal enum Glide
+    public enum Glide
     {
         Glide1,
         Glide2,
@@ -29,7 +29,7 @@
         Glide7
     }
 
-    internal enum Turn
+    public enum Turn
     {
         TurnNegative5 = -5,
         TurnNegative4 = -4,
@@ -40,7 +40,7 @@
         Turn1 = 1
     }
 
-    internal enum Fade
+    public enum Fade
     {
         Fade0 = 0,
         Fade1 = 1,
