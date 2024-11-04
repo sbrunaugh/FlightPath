@@ -1,7 +1,6 @@
 using Assets.Scripts.Models;
 using Assets.Scripts;
 using UnityEngine;
-using Unity.VisualScripting;
 
 public class Throw : MonoBehaviour
 {
@@ -74,22 +73,23 @@ public class Throw : MonoBehaviour
 
         var flightPath = FlightPath.CalculateFlightPath(memDisc, discOrientation, launchAngle, originPoint, velocity);
 
-        GameObject[] floaterArray = new GameObject[300];
+        Vector3[] floaterArray = new Vector3[122];
 
-        for (float i = 0; i < 300; i += 1f)
+        for (float i = 0; i < 122; i += 1f)
         {
             Vector3 point = flightPath(i);
             var newFloater = Instantiate(floaterPrefab, point, Quaternion.identity, floaterParent.transform);
 
             newFloater.name = "floater" + i;
-            floaterArray[(int)i] = newFloater;
+            floaterArray[(int)i] = newFloater.transform.position;
         }
 
         disc.transform.SetParent(null);
         if(disc.TryGetComponent<DiscMover>(out var discMover))
         {
-            discMover.shouldMove = true;
+            disc.transform.Flatten();
             discMover.floaters = floaterArray;
+            discMover.shouldMove = true;
         }
 
         cameraFollowScript.FollowDisc();

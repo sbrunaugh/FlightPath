@@ -17,7 +17,7 @@ namespace Assets.Scripts
             // TODO: Adjust the 3 equations of the parametric curve based on the above parameters.
             Func<float, Vector3> parametricCurve = (t) =>
             {
-                // Y == forward; X == left/right; Z == up/down
+                // X == left/right; Z == forward; Y == up/down 
                 // 10 * sin(-0.05t)
                 float x = 10f * Mathf.Sin(-0.05f * t);
                 // 1.2t
