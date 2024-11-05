@@ -18,13 +18,19 @@ namespace Assets.Scripts
             Func<float, Vector3> parametricCurve = (t) =>
             {
                 // X == left/right; Z == forward; Y == up/down 
+
                 // 10 * sin(-0.05t)
-                float x = 10f * Mathf.Sin(-0.05f * t);
+                float x = 10f * Mathf.Sin(-0.04f * t);
+
                 // 1.2t
-                float z = 1.2f * t;
+                float z = t; // 0 * (float)Math.Sqrt(t);
+                
                 // if(t<100, 0.235t, -0.05(t-100)^2 + 23.5)
-                float y = t < 100 ? 0.235f * t : -0.05f * (t - 100).Squared() + 23.5f;
-                return new Vector3(x, y, z);
+                float y = t < 100 
+                    ? (float)Math.Sqrt(t) 
+                    : -0.005f * (t - 100f).Squared() + 10f;
+
+                return new Vector3(x, y, z) + originPoint;
             };
 
             return parametricCurve;

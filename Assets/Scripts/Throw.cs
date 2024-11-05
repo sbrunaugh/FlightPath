@@ -1,6 +1,7 @@
 using Assets.Scripts.Models;
 using Assets.Scripts;
 using UnityEngine;
+using System;
 
 public class Throw : MonoBehaviour
 {
@@ -34,6 +35,33 @@ public class Throw : MonoBehaviour
         animator.SetTrigger("Throw");
     }
 
+    // Set up hard-coded values
+    // Using Dynamic Discs Truth
+    Disc memDisc = new()
+    {
+        Speed = Speed.Speed5,
+        Glide = Glide.Glide5,
+        Turn = Turn.Turn0,
+        Fade = Fade.Fade2
+    };
+
+    // Completely flat disc nose angle and no hyzer/anhyzer
+    DiscOrientation discOrientation = new()
+    {
+        DiscRoll = 0f,
+        DiscPitch = 0f
+    };
+
+    // For discs, optimal launch angle is between 15 and 30 degrees
+    LaunchAngle launchAngle = new()
+    {
+        PolarAngle = 60f,
+        AzimuthalAngle = 90f // Thrown straight towards positive z.
+    };
+
+    // Semi-average disc speed
+    float velocity = 100f; // Measured in kmph
+
     void ThrowDisc()
     {
         if(floaterPrefab == null)
@@ -42,50 +70,23 @@ public class Throw : MonoBehaviour
             return;
         }
 
-        // Set up hard-coded values
-        // Using Dynamic Discs Truth
-        Disc memDisc = new()
-        {
-            Speed = Speed.Speed5,
-            Glide = Glide.Glide5,
-            Turn = Turn.Turn0,
-            Fade = Fade.Fade2
-        };
+        Vector3 originPoint = disc.transform.position;
 
-        // Completely flat disc nose angle and no hyzer/anhyzer
-        DiscOrientation discOrientation = new()
-        {
-            DiscRoll = 0f,
-            DiscPitch = 0f
-        };
+        Func<float, Vector3> flightPath = FlightPath.CalculateFlightPath(memDisc, discOrientation, launchAngle, originPoint, velocity);
 
-        // For discs, optimal launch angle is between 15 and 30 degrees
-        LaunchAngle launchAngle = new()
-        {
-            PolarAngle = 60f,
-            AzimuthalAngle = 90f // Thrown straight towards positive z.
-        };
+        Vector3[] floaterArray = new Vector3[300];
 
-        var originPoint = new Vector3(0, 0, 0);
-
-        // Semi-average disc speed
-        var velocity = 100f; // Measured in kmph
-
-        var flightPath = FlightPath.CalculateFlightPath(memDisc, discOrientation, launchAngle, originPoint, velocity);
-
-        Vector3[] floaterArray = new Vector3[122];
-
-        for (float i = 0; i < 122; i += 1f)
+        for (float i = 0; i < 300; i += 1f)
         {
             Vector3 point = flightPath(i);
             var newFloater = Instantiate(floaterPrefab, point, Quaternion.identity, floaterParent.transform);
 
             newFloater.name = "floater" + i;
-            floaterArray[(int)i] = newFloater.transform.position;
+            floaterArray[(int)i] = point;
         }
 
         disc.transform.SetParent(null);
-        if(disc.TryGetComponent<DiscMover>(out var discMover))
+        if (disc.TryGetComponent<DiscMover>(out var discMover))
         {
             disc.transform.Flatten();
             discMover.floaters = floaterArray;
